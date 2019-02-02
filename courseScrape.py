@@ -29,17 +29,14 @@ for course in majorNames:
     name = name[(name_length - 4):]
     majorURLs.append(name)
 
-# Create URL for each major catalog by concatenating major abbreviation
-for i in range(len(majorURLs)):
-    current_url = majors_page + majorURLs[i] + '.shtml'
-    majorURLs[i] = current_url
-
 # Initial row of csv
 with open('data.csv',mode='w') as courseFile:
     courseWriter = csv.writer(courseFile,delimiter =',')
     courseWriter.writerow(['Course','CourseNum','Section','Instrucors','Days','Time','Building'])
 
-for current in majorURLs:
+for current_major in majorURLs:
+
+    current_url = majors_page + current_major + '.shtml'
 
     #list variables containing web data
     courseNames = []
@@ -51,7 +48,7 @@ for current in majorURLs:
     classBldg = []
 
     #
-    open_page = urllib2.urlopen(current)
+    open_page = urllib2.urlopen(current_url)
 
     #
     parse_page = BeautifulSoup(open_page,'html.parser')
@@ -74,7 +71,7 @@ for current in majorURLs:
     		#if instructor does not exist, class does not exist
             if instructor and time:
                 course = courseNames[i].text.strip()
-                number = classNum[i].text.strip()
+                number = current_major + classNum[i].text.strip()
                 section = sectionNum[i].text.strip()
                 day = classDay[i].text.strip()
                 building = classBldg[i].text.strip()
