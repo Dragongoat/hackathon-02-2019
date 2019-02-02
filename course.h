@@ -17,18 +17,18 @@ public:
     building = a_building;
     room = a_room;
   };
-  string get_title(){ return title };
-  string get_course_num(){ return course_num };
-  int get_section(){ return section };
-  string get_instructor(){ return instructor };
-  string get_day(){ return day };
-  string get_time(){ return time };
-  string get_building(){ return building };
-  string get_room(){ return room };
+  string get_title(){ return title; };
+  string get_course_num(){ return course_num; };
+  string get_section(){ return section; };
+  string get_instructor(){ return instructor; };
+  string get_day(){ return day; };
+  string get_time(){ return time; };
+  string get_building(){ return building; };
+  string get_room(){ return room; };
 private:
   string title;
   string course_num;
-  int section;
+  string section;
   string instructor;
   string day;
   string time;
