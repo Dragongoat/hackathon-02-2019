@@ -7,13 +7,14 @@ using std::string;
 
 class Course {
 public:
-  Course(string a_title, string a_course_num, int a_section, string a_instructor, string a_day, string a_time, string a_building, string a_room) {
+  Course(string a_title, string a_course_num, string a_section, string a_instructor, string a_day, string a_start_time, string a_end_time, string a_building, string a_room) {
     title = a_title;
     course_num = a_course_num;
     section = a_section;
     instructor = a_instructor;
     day = a_day;
-    time = a_time;
+    start_time = a_start_time;
+    end_time = a_end_time;
     building = a_building;
     room = a_room;
   };
