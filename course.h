@@ -22,7 +22,8 @@ public:
   string get_section(){ return section; };
   string get_instructor(){ return instructor; };
   string get_day(){ return day; };
-  string get_time(){ return time; };
+  string get_start_time(){ return start_time; };
+  string get_end_time(){ return end_time; };
   string get_building(){ return building; };
   string get_room(){ return room; };
 private:
@@ -31,7 +32,8 @@ private:
   string section;
   string instructor;
   string day;
-  string time;
+  string start_time;
+  string end_time;
   string building;
   string room;
 };
