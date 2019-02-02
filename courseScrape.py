@@ -69,13 +69,13 @@ for current in majorURLs:
     with open('data.csv',mode='a') as courseFile:
     	courseWriter = csv.writer(courseFile,delimiter =',')
     	for i in range(len(courseNames)):
-    		time = classTime[i].text.strip()
-    		#if time does not exist, class does not exist
-    		if time:
+    		instructor = instructors[i].text.strip()
+    		#if instructor does not exist, class does not exist
+    		if instructor:
     			course = courseNames[i].text.strip()
     			number = classNum[i].text.strip()
     			section = sectionNum[i].text.strip()
-    			instructor = instructors[i].text.strip()
     			day = classDay[i].text.strip()
-    			building = classBldg[i].text.strip()
-    			courseWriter.writerow([course,number,section,instructor,day,time,building])
+                time = classTime[i].text.strip()
+                building = classBldg[i].text.strip()
+                courseWriter.writerow([course,number,section,instructor,day,time,building])
