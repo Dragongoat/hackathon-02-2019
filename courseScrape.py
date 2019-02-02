@@ -30,6 +30,52 @@ for course in majorNames:
     majorURLs.append(name)
 
 # Create URL for each major catalog by concatenating major abbreviation
-for current_major in majorURLs:
-    current_url = majors_page + current_major + '.shtml'
-    current_major = current_url
+for i in range(len(majorURLs)):
+    current_url = majors_page + majorURLs[i] + '.shtml'
+    majorURLs[i] = current_url
+
+# Initial row of csv
+with open('data.csv',mode='w') as courseFile:
+    courseWriter = csv.writer(courseFile,delimiter =',')
+    courseWriter.writerow(['Course','CourseNum','Section','Instrucors','Days','Time','Building'])
+
+for current in majorURLs:
+
+    #list variables containing web data
+    courseNames = []
+    classNum = []
+    sectionNum = []
+    instructors = []
+    classDay = []
+    classTime = []
+    classBldg = []
+
+    #
+    open_page = urllib2.urlopen(current)
+
+    #
+    parse_page = BeautifulSoup(open_page,'html.parser')
+
+    #Find all necessarry attributes
+    courseNames = parse_page.findAll('td',attrs={'class' : 'title'})
+    classNum = parse_page.findAll('td',attrs={'class':'cat_num'})
+    sectionNum = parse_page.findAll('td',attrs={'class':'sect'})
+    instructors = parse_page.findAll('td',attrs={'class':'Instructor'})
+    classDay = parse_page.findAll('td',attrs={'class':'days'})
+    classTime = parse_page.findAll('td',attrs={'class':'time'})
+    classBldg = parse_page.findAll('td',attrs={'class':'loc'})
+
+    #Write each data set to csv
+    with open('data.csv',mode='a') as courseFile:
+    	courseWriter = csv.writer(courseFile,delimiter =',')
+    	for i in range(len(courseNames)):
+    		time = classTime[i].text.strip()
+    		#if time does not exist, class does not exist
+    		if time:
+    			course = courseNames[i].text.strip()
+    			number = classNum[i].text.strip()
+    			section = sectionNum[i].text.strip()
+    			instructor = instructors[i].text.strip()
+    			day = classDay[i].text.strip()
+    			building = classBldg[i].text.strip()
+    			courseWriter.writerow([course,number,section,instructor,day,time,building])
