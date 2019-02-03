@@ -118,7 +118,7 @@ int menu_search(vector<Course> all_courses) {
           for (int i = 0; i < (int)applied_filters.size(); i++) {
             if (applied_filters[i].type == filter_type) {
               cout << "ERROR: Only one filter of each type may be added\n";
-              dupe_type = true;;
+              dupe_type = true;
             }
           }
           if (!dupe_type) {
