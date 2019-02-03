@@ -16,6 +16,7 @@ void Course::print() {
 	int st_size = get_start_time().length();
 	int et_size = get_end_time().length();
 	int t_w = 40;
+	int m_w = 8;
 	int cn_w = 8;
 	int s_w = 4;
 	int i_w = 35;
@@ -27,7 +28,7 @@ void Course::print() {
 	// end variables
 
 
-	cout << get_title() << setw(t_w-t_size)<< " " << get_course_num() << setw(cn_w - cn_size) << " " << get_section();
+	cout << get_title() << setw(t_w-t_size)<< " " << get_major() << setw(m_w)<< " " << get_course_num() << setw(cn_w - cn_size) << " " << get_section();
 	cout << setw(s_w - s_size) << " " << get_instructor()<< setw(i_w - i_size) << " " << get_day() << setw(d_w - d_size) << " " << get_start_time();
 	cout << setw(st_w - st_size) << " " << get_end_time() <<  setw(et_w - et_size)  << " " << setw(b_w) << get_building();
 	cout << setw(r_w) << " " << get_room() << endl;

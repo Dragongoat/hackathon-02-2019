@@ -32,7 +32,7 @@ for course in majorNames:
 # Initial row of csv
 with open('data.csv',mode='w') as courseFile:
     courseWriter = csv.writer(courseFile,delimiter =',')
-    courseWriter.writerow(['Course','CourseNum','Section','Instrucors','Days','Time','Building'])
+    courseWriter.writerow(['Course','Major','CourseNum','Section','Instrucors','Days','Time','Building'])
 
 for current_major in majorURLs:
 
@@ -61,7 +61,7 @@ for current_major in majorURLs:
     classDay = parse_page.findAll('td',attrs={'class':'days'})
     classTime = parse_page.findAll('td',attrs={'class':'time'})
     classBldg = parse_page.findAll('td',attrs={'class':'loc'})
-
+	
     #Write each data set to csv
     with open('data.csv',mode='a') as courseFile:
     	courseWriter = csv.writer(courseFile,delimiter =',')
@@ -71,8 +71,8 @@ for current_major in majorURLs:
     		#if instructor does not exist, class does not exist
             if instructor and time:
                 course = courseNames[i].text.strip()
-                number = current_major + classNum[i].text.strip()
+                number = classNum[i].text.strip()
                 section = sectionNum[i].text.strip()
                 day = classDay[i].text.strip()
                 building = classBldg[i].text.strip()
-                courseWriter.writerow([course,number,section,instructor,day,time,building])
+                courseWriter.writerow([course,current_major,number,section,instructor,day,time,building])
