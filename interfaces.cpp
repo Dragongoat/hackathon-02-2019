@@ -1,8 +1,9 @@
 #include "interfaces.h"
+#include "filter.h"
 
 #define FORMAT_LINE "====================\n"
 
-int menu_home() {
+int menu_home(vector<Course> all_courses) {
 
   vector<string> options;
   options.push_back("Search");
@@ -19,7 +20,7 @@ int menu_home() {
 
     switch(selection) {
       case 1:
-        menu_search();
+        menu_search(all_courses);
         break;
       case 2:
         menu_current_classes();
@@ -66,9 +67,10 @@ int get_selection(int num_options) {
 }
 
 
-int menu_search() {
+int menu_search(vector<Course> all_courses) {
 
-  vector<string> applied_filters;
+  vector<Course> filtered_courses = all_courses;
+  vector<Filter> applied_filters;
 
   vector<string> options;
   options.push_back("Add new filter");
@@ -86,14 +88,16 @@ int menu_search() {
       cout << "\nCurrent filters: ";
     }
     for (int i = 0; i < (int)applied_filters.size(); i++) {
-      cout << "<" << applied_filters[i] << "> ";
+      cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
     cout << endl;
     int selection = Selection(options);
 
     switch(selection) {
       case 1:
-        cout << "Add new filter called\n";
+        string filter_type, target;
+        specifyFilter(filter_type, target);
+        filtered_courses = add_filter(filtered_courses, &applied_filters, filter_type, target);
         break;
       case 2:
         cout << "Remove filter called\n";
@@ -102,7 +106,9 @@ int menu_search() {
         cout << "Search courses called\n";
         break;
       case 4:
-        cout << "Show all filtered courses called\n";
+        for (int i = 0; i < (int)filtered_courses.size(); i++) {
+          filtered_courses[i].print();
+        }
         break;
       case 5:
         quit = true;
@@ -114,8 +120,8 @@ int menu_search() {
   return 0;
 }
 
-int menu_current_classes() {
-  vector<string> applied_filters;
+int menu_current_classes(vector<Course> all_courses) {
+  vector<Filter> applied_filters;
 
   vector<string> options;
   options.push_back("Add new filter");
@@ -132,7 +138,7 @@ int menu_current_classes() {
       cout << "\nCurrent filters: ";
     }
     for (int i = 0; i < (int)applied_filters.size(); i++) {
-      cout << "<" << applied_filters[i] << "> ";
+      cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
     cout << endl;
     int selection = Selection(options);
@@ -156,8 +162,8 @@ int menu_current_classes() {
   return 0;
 }
 
-int menu_todays_classes() {
-  vector<string> applied_filters;
+int menu_todays_classes(vector<Course> all_courses) {
+  vector<Filter> applied_filters;
 
   vector<string> options;
   options.push_back("Add new filter");
@@ -174,7 +180,7 @@ int menu_todays_classes() {
       cout << "\nCurrent filters: ";
     }
     for (int i = 0; i < (int)applied_filters.size(); i++) {
-      cout << "<" << applied_filters[i] << "> ";
+      cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
     cout << endl;
     int selection = Selection(options);
@@ -196,4 +202,35 @@ int menu_todays_classes() {
   }
 
   return 0;
+}
+
+void specifyFilter(string &filter_type, string &target) {
+  vector<string> options;
+  options.push_back("Course Title");
+  options.push_back("Course number");
+  options.push_back("Instructor");
+  options.push_back("Day");
+  options.push_back("Time");
+  options.push_back("Building");
+
+  bool quit = false;
+  while (!quit) {
+    cout << FORMAT_LINE;
+    cout << "What type of filter would you like to add?\n";
+    cout << FORMAT_LINE;
+    cout << endl;
+    int selection = Selection(options);
+
+    switch(selection) {
+      case 1:
+        filter_type = "title";
+        cout << "Enter course title to filter: ";
+        cin >> target;
+        cin.flush();
+        break;
+      default:
+        cout << "Currently unavailable\n";
+        break;
+    }
+  }
 }
