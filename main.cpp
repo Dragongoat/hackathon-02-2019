@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <time.h>
 
 using std::cin;
 using std::cout;
@@ -17,17 +18,29 @@ using std::getline;
 using std::stringstream;
 using std::stoi;
 using std::to_string;
-
+using std::chrono::system_clock;
 //Function declarations
 vector<Course> parseCSV(string fileName);
 vector<string> parseTime(string time);
 string convertTime(string time);
+void getTime(char &day, string &t);
 
 int main(){
+	
+/*	time_t tt = time(NULL);
+	stringstream ss;
+	ss << ctime(&tt);
+	string time = ss.str();
+	cout << time << endl;
+	string day;
+	getline(ss,day,' ');
+	cout << day << endl;
+	//cout << timeStr << endl;
+*/
+	
 	vector<Course> courseList;
 	string csvFile = "data.csv";
 	courseList = parseCSV(csvFile);
-
 	menu_home(courseList);
 
 
@@ -48,7 +61,7 @@ vector<Course> parseCSV(string fileName){
 	while(getline(inFile,line)){
 		stringstream ss;
 		ss << line;
-		string title, major, course_num, section, instructor, day, time, building, room;
+		string title, course_major,course_num, section, instr_fn,instr_ln, day, time, building, room;
 		// Get title
 		if (ss.peek() == '"') {
 			ss.ignore();
@@ -58,16 +71,23 @@ vector<Course> parseCSV(string fileName){
 		else {
 			getline(ss, title, ',');
 		}
-		// Get major
-		getline(ss, major, ',');
+		//Get Course major
+		getline(ss,course_major,',');
 		// Get Course number
 		getline(ss, course_num, ',');
 		// Get Section
 		getline(ss, section, ',');
-		// Get Instructor
+		// Get Instructor Last Name
 		ss.ignore();
-		getline(ss, instructor, '"');
-		ss.ignore();
+		getline(ss, instr_ln, ',');
+		//Get Instructor First Name
+		getline(ss,instr_fn,',');
+		instr_fn.erase(instr_fn.length()-1,1);
+		if(isupper(instr_fn[instr_fn.length()-1])){
+			instr_fn.erase(instr_fn.length()-1,1);
+		}
+		//Store Instructor names into struct
+		instructor instr(instr_fn,instr_ln);
 		// Get day
 		getline(ss, day, ',');
 		// Get time
@@ -81,7 +101,7 @@ vector<Course> parseCSV(string fileName){
 		getline(ss, room, ',');
 
 		//store info into course class vector
-		Course currentCourse = Course(title, major, course_num,section,instructor,day,timeArr[0],timeArr[1],building,room);
+		Course currentCourse = Course(title,course_major,course_num,section,instr,day,timeArr[0],timeArr[1],building,room);
 		courseList.push_back(currentCourse);
 
 	}
@@ -119,4 +139,31 @@ string convertTime(string time){
 		}
 	}
 	return time;
+}
+
+void getTime(char &day, string &t){
+	string curDay,garbage, curTime;
+	stringstream ss;
+	time_t tt = time(NULL);
+	ss << ctime(&tt);
+	//Get current day
+	getline(ss,curDay,' ');
+	//Getting rid of garbage values
+	getline(ss,garbage,' ');
+	getline(ss,garbage,' ');
+	getline(ss,garbage,' ');
+	// enf of garbage valies
+	// Get time
+	getline(ss,curTime,' ');
+	curTime.erase(2,1);
+	curTime.erase(4,3);
+	if(curDay[0] != 'T'){
+		day = curDay[0];
+	}	
+	else{
+		if(curDay[1] == 'u') day = 'T';
+		else day = 'R';
+	}
+
+	t = curTime;
 }
