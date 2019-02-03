@@ -1,4 +1,7 @@
 #include "filter.h"
+#include <cctype>
+
+using std::toupper;
 
 vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_filters, string filter_type, string specific) {
 
@@ -25,11 +28,18 @@ vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_fi
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "day") {
+    for (int i = 0; i < (int)specific.size(); i++) {
+      specific[i] = toupper(specific[i]);
+    }
     updated_course_pool = filter_day(course_pool, specific);
     applied_filters.push_back(adding_filter);
   }
-  else if (filter_type == "time") {
-    updated_course_pool = filter_time(course_pool, specific);
+  else if (filter_type == "start_time") {
+    updated_course_pool = filter_s_time(course_pool, specific);
+    applied_filters.push_back(adding_filter);
+  }
+  else if (filter_type == "end_time") {
+    updated_course_pool = filter_e_time(course_pool, specific);
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "building") {
@@ -109,10 +119,50 @@ vector<Course> filter_instructor(vector<Course> course_pool, string target) {
 }
 vector<Course> filter_day(vector<Course> course_pool, string target) {
   vector<Course> filtered;
+
+  sort(course_pool.begin(), course_pool.end(), comp_day);
+
+  int index = binSearchDay(course_pool, target, 0, course_pool.size() - 1);
+  // Finds first occurrence of the target
+  while (index > 0 && course_pool[index - 1].get_day() == target) {
+    index--;
+  }
+  while (index < (int)course_pool.size() && course_pool[index].get_day() == target) {
+    filtered.push_back(course_pool[index]);
+    index++;
+  }
   return filtered;
 }
-vector<Course> filter_time(vector<Course> course_pool, string target) {
+vector<Course> filter_s_time(vector<Course> course_pool, string target) {
   vector<Course> filtered;
+
+  sort(course_pool.begin(), course_pool.end(), comp_s_time);
+
+  int index = binSearchSTime(course_pool, target, 0, course_pool.size() - 1);
+  // Finds first occurrence of the target
+  while (index > 0 && course_pool[index - 1].get_start_time() == target) {
+    index--;
+  }
+  while (index < (int)course_pool.size() && course_pool[index].get_start_time() == target) {
+    filtered.push_back(course_pool[index]);
+    index++;
+  }
+  return filtered;
+}
+vector<Course> filter_e_time(vector<Course> course_pool, string target) {
+  vector<Course> filtered;
+
+  sort(course_pool.begin(), course_pool.end(), comp_e_time);
+
+  int index = binSearchETime(course_pool, target, 0, course_pool.size() - 1);
+  // Finds first occurrence of the target
+  while (index > 0 && course_pool[index - 1].get_end_time() == target) {
+    index--;
+  }
+  while (index < (int)course_pool.size() && course_pool[index].get_end_time() == target) {
+    filtered.push_back(course_pool[index]);
+    index++;
+  }
   return filtered;
 }
 vector<Course> filter_building(vector<Course> course_pool, string target) {
@@ -129,10 +179,6 @@ vector<Course> filter_building(vector<Course> course_pool, string target) {
     filtered.push_back(course_pool[index]);
     index++;
   }
-  return filtered;
-}
-vector<Course> filter_room(vector<Course> course_pool, string target) {
-  vector<Course> filtered;
   return filtered;
 }
 
@@ -198,6 +244,57 @@ int binSearchInstructor(vector<Course> course_pool, string target, int low, int 
   }
   else if (course_pool[mid].get_instructor() < target) {
     return binSearchInstructor(course_pool, target, mid + 1, high);
+  }
+  else {
+    return mid;
+  }
+}
+
+// This code based on binary search pseudocode at http://en.wikipedia.org/wiki/Binary_search
+int binSearchDay(vector<Course> course_pool, string target, int low, int high) {
+  if (high < low) {
+    return -1;
+  }
+  int mid = (low + high) / 2;
+  if (course_pool[mid].get_day() > target) {
+    return binSearchDay(course_pool, target, low, mid - 1);
+  }
+  else if (course_pool[mid].get_day() < target) {
+    return binSearchDay(course_pool, target, mid + 1, high);
+  }
+  else {
+    return mid;
+  }
+}
+
+// This code based on binary search pseudocode at http://en.wikipedia.org/wiki/Binary_search
+int binSearchSTime(vector<Course> course_pool, string target, int low, int high) {
+  if (high < low) {
+    return -1;
+  }
+  int mid = (low + high) / 2;
+  if (course_pool[mid].get_start_time() > target) {
+    return binSearchSTime(course_pool, target, low, mid - 1);
+  }
+  else if (course_pool[mid].get_start_time() < target) {
+    return binSearchSTime(course_pool, target, mid + 1, high);
+  }
+  else {
+    return mid;
+  }
+}
+
+// This code based on binary search pseudocode at http://en.wikipedia.org/wiki/Binary_search
+int binSearchETime(vector<Course> course_pool, string target, int low, int high) {
+  if (high < low) {
+    return -1;
+  }
+  int mid = (low + high) / 2;
+  if (course_pool[mid].get_end_time() > target) {
+    return binSearchETime(course_pool, target, low, mid - 1);
+  }
+  else if (course_pool[mid].get_end_time() < target) {
+    return binSearchETime(course_pool, target, mid + 1, high);
   }
   else {
     return mid;

@@ -1,5 +1,10 @@
 #include "interfaces.h"
 #include "filter.h"
+#include <cctype>
+#include <cstdlib>
+
+using std::atoi;
+using std::isdigit;
 
 
 #define FORMAT_LINE "====================\n"
@@ -62,10 +67,14 @@ void selection_display(vector<string> options) {
 
 int get_selection(int num_options) {
   cout << "\nSelection: ";
-  int selection;
+  string selection;
   cin >> selection;
   cin.ignore();
-  return selection;
+
+  if (selection.size() > 1 || !isdigit(selection[0])) {
+    selection = -1;
+  }
+  return atoi(&selection[0]);
 }
 
 
@@ -230,9 +239,9 @@ void specifyFilter(string &filter_type, string &target) {
   options.push_back("Course number");
   options.push_back("Instructor");
   options.push_back("Day");
-  options.push_back("Time");
+  options.push_back("Start Time");
+  options.push_back("End Time");
   options.push_back("Building");
-  options.push_back("Room");
 
   cout << FORMAT_LINE;
   cout << "What type of filter would you like to add?\n";
@@ -261,7 +270,22 @@ void specifyFilter(string &filter_type, string &target) {
       cout << "Enter instructor to filter: ";
       getline(cin, target);
       break;
+    case 5:
+      filter_type = "day";
+      cout << "Enter day(s) to filter (Note: Thurs = 'R'): ";
+      getline(cin, target);
+      break;
+    case 6:
+      filter_type = "start_time";
+      cout << "Enter start time to filter (Note: 1:30PM = 1330): ";
+      getline(cin, target);
+      break;
     case 7:
+      filter_type = "end_time";
+      cout << "Enter end time to filter (Note: 1:30PM = 1330): ";
+      getline(cin, target);
+      break;
+    case 8:
       filter_type = "building";
       cout << "Enter building to filter: ";
       getline(cin, target);

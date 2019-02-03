@@ -50,6 +50,18 @@ int comp_instructor(Course a, Course b) {
   return a.get_instructor() < b.get_instructor();
 }
 
+int comp_day(Course a, Course b) {
+  return a.get_day() < b.get_day();
+}
+
+int comp_s_time(Course a, Course b) {
+  return a.get_start_time() < b.get_start_time();
+}
+
+int comp_e_time(Course a, Course b) {
+  return a.get_end_time() < b.get_end_time();
+}
+
 int comp_building(Course a, Course b) {
   return a.get_building() < b.get_building();
 }
