@@ -29,7 +29,12 @@ vector<Course> filter_instructor(vector<Course> course_pool, string target);
 vector<Course> filter_day(vector<Course> course_pool, string target);
 vector<Course> filter_time(vector<Course> course_pool, string target);
 vector<Course> filter_building(vector<Course> course_pool, string target);
+vector<Course> filter_room(vector<Course> course_pool, string target);
 int binSearchTitle(vector<Course> course_pool, string target, int low, int high);
+int binSearchMajor(vector<Course> course_pool, string target, int low, int high);
+int binSearchNumber(vector<Course> course_pool, string target, int low, int high);
+int binSearchInstructor(vector<Course> course_pool, string target, int low, int high);
+int binSearchBuilding(vector<Course> course_pool, string target, int low, int high);
 
 
 #endif
