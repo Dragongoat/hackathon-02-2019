@@ -27,6 +27,7 @@ public:
   string get_end_time(){ return end_time; };
   string get_building(){ return building; };
   string get_room(){ return room; };
+  void print();
 private:
   string title;
   string course_num;

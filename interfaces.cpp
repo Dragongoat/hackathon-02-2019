@@ -1,6 +1,7 @@
 #include "interfaces.h"
 #include "filter.h"
 
+
 #define FORMAT_LINE "====================\n"
 
 int menu_home(vector<Course> all_courses) {
@@ -23,10 +24,10 @@ int menu_home(vector<Course> all_courses) {
         menu_search(all_courses);
         break;
       case 2:
-        menu_current_classes();
+        menu_current_classes(all_courses);
         break;
       case 3:
-        menu_todays_classes();
+        menu_todays_classes(all_courses);
         break;
       case 4:
         quit = true;
@@ -63,6 +64,7 @@ int get_selection(int num_options) {
   cout << "\nSelection: ";
   int selection;
   cin >> selection;
+  cin.ignore();
   return selection;
 }
 
@@ -95,10 +97,12 @@ int menu_search(vector<Course> all_courses) {
 
     switch(selection) {
       case 1:
-        string filter_type, target;
-        specifyFilter(filter_type, target);
-        filtered_courses = add_filter(filtered_courses, &applied_filters, filter_type, target);
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          filtered_courses = add_filter(filtered_courses, applied_filters, filter_type, filter_target);
+          break;
+        }
       case 2:
         cout << "Remove filter called\n";
         break;
@@ -213,24 +217,20 @@ void specifyFilter(string &filter_type, string &target) {
   options.push_back("Time");
   options.push_back("Building");
 
-  bool quit = false;
-  while (!quit) {
-    cout << FORMAT_LINE;
-    cout << "What type of filter would you like to add?\n";
-    cout << FORMAT_LINE;
-    cout << endl;
-    int selection = Selection(options);
+  cout << FORMAT_LINE;
+  cout << "What type of filter would you like to add?\n";
+  cout << FORMAT_LINE;
+  cout << endl;
+  int selection = Selection(options);
 
-    switch(selection) {
-      case 1:
-        filter_type = "title";
-        cout << "Enter course title to filter: ";
-        cin >> target;
-        cin.flush();
-        break;
-      default:
-        cout << "Currently unavailable\n";
-        break;
-    }
+  switch(selection) {
+    case 1:
+      filter_type = "title";
+      cout << "Enter course title to filter: ";
+      getline(cin, target);
+      break;
+    default:
+      cout << "Currently unavailable\n";
+      break;
   }
 }

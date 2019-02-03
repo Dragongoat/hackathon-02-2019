@@ -1,4 +1,5 @@
 #include "course.h"
+#include "interfaces.h"
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -27,7 +28,8 @@ int main(){
 	string csvFile = "data.csv";
 	courseList = parseCSV(csvFile);
 
-	
+	menu_home(courseList);
+
 
 
 	return 0;
@@ -70,7 +72,7 @@ vector<Course> parseCSV(string fileName){
 		getline(ss, time, ',');
 		// Parse time into 24 hour and into start/end
 		vector<string> timeArr;
-		timeArr = parseTime(time);	
+		timeArr = parseTime(time);
 		// Get building
 		getline(ss, building, ' ');
 		// Get room
