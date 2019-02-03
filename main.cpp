@@ -26,9 +26,7 @@ int main(){
 	vector<Course> courseList;
 	string csvFile = "data.csv";
 	courseList = parseCSV(csvFile);
-	for(int i = 0; i < courseList.size(); i++){
-		courseList[i].print();
-	}
+
 	
 
 
@@ -36,6 +34,7 @@ int main(){
 }
 
 
+//Parses CSV file for courses information and stores in  vector of course object
 vector<Course> parseCSV(string fileName){
 	string line;
 	string attribute;
@@ -85,6 +84,7 @@ vector<Course> parseCSV(string fileName){
 	return courseList;
 }
 
+//Parses time string into two strings and passes to convertTime function
 vector<string> parseTime(string time){
 	vector<string> times;
 	int end = time.length() -1;
@@ -98,6 +98,7 @@ vector<string> parseTime(string time){
 }
 
 
+//coverts a time in string format from 12 hour to 24 hour
 string convertTime(string time){
 	int time_end = time.length()-1;
 	if(time[time_end-1] == 'A'){ // AM Class
@@ -115,18 +116,3 @@ string convertTime(string time){
 	}
 	return time;
 }
-
-/*void printCourseVector(vector<Course> cv){
-    //Variables for width formatting
-	int t_w = 28; 
-    int cn_w = 8;
-    int s_w = 4;
-    int i_w = 35; 
-    int d_w = 8;
-    int st_w = 8;
-    int et_w = 8;
-    int b_w = 5;
-    int r_w = 5;
-	// end variables
-
-}*/
