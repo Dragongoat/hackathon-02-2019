@@ -92,6 +92,9 @@ int menu_search(vector<Course> all_courses) {
     for (int i = 0; i < (int)applied_filters.size(); i++) {
       cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
+    if (applied_filters.size() > 0) {
+      cout << endl;
+    }
     cout << endl;
     int selection = Selection(options);
 
@@ -100,7 +103,18 @@ int menu_search(vector<Course> all_courses) {
         {
           string filter_type, filter_target;
           specifyFilter(filter_type, filter_target);
-          filtered_courses = add_filter(filtered_courses, applied_filters, filter_type, filter_target);
+          // Check if filter is already applied
+          bool dupe_type = false;
+          for (int i = 0; i < (int)applied_filters.size(); i++) {
+            if (applied_filters[i].type == filter_type) {
+              cout << "ERROR: Only one filter of each type may be added\n";
+              dupe_type = true;;
+            }
+          }
+          if (!dupe_type) {
+            filtered_courses = add_filter(filtered_courses, applied_filters, filter_type, filter_target);
+          }
+          cout << endl;
           break;
         }
       case 2:
@@ -113,6 +127,7 @@ int menu_search(vector<Course> all_courses) {
         for (int i = 0; i < (int)filtered_courses.size(); i++) {
           filtered_courses[i].print();
         }
+        cout << endl;
         break;
       case 5:
         quit = true;
@@ -211,6 +226,7 @@ int menu_todays_classes(vector<Course> all_courses) {
 void specifyFilter(string &filter_type, string &target) {
   vector<string> options;
   options.push_back("Course Title");
+  options.push_back("Major");
   options.push_back("Course number");
   options.push_back("Instructor");
   options.push_back("Day");

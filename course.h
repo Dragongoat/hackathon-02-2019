@@ -7,8 +7,9 @@ using std::string;
 
 class Course {
 public:
-  Course(string a_title, string a_course_num, string a_section, string a_instructor, string a_day, string a_start_time, string a_end_time, string a_building, string a_room) {
+  Course(string a_title, string a_major, string a_course_num, string a_section, string a_instructor, string a_day, string a_start_time, string a_end_time, string a_building, string a_room) {
     title = a_title;
+    major = a_major;
     course_num = a_course_num;
     section = a_section;
     instructor = a_instructor;
@@ -19,6 +20,7 @@ public:
     room = a_room;
   };
   string get_title(){ return title; };
+  string get_major() { return major; };
   string get_course_num(){ return course_num; };
   string get_section(){ return section; };
   string get_instructor(){ return instructor; };
@@ -30,6 +32,7 @@ public:
   void print();
 private:
   string title;
+  string major;
   string course_num;
   string section;
   string instructor;

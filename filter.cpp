@@ -1,12 +1,16 @@
 #include "filter.h"
 
 vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_filters, string filter_type, string specific) {
-  // Check if filter is already applied
+
+  Filter adding_filter;
+  adding_filter.type = filter_type;
+  adding_filter.item_to_filter = specific;
 
   vector<Course> updated_course_pool;
 
   if (filter_type == "title") {
     updated_course_pool = filter_title(course_pool, specific);
+    applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "number") {
     updated_course_pool = filter_number(course_pool, specific);
@@ -44,6 +48,10 @@ vector<Course> filter_title(vector<Course> course_pool, string target) {
     index++;
   }
 
+  return filtered;
+}
+vector<Course> filter_major(vector<Course> course_pool, string target) {
+  vector<Course> filtered;
   return filtered;
 }
 vector<Course> filter_number(vector<Course> course_pool, string target) {

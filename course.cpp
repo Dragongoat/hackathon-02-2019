@@ -37,6 +37,10 @@ int comp_title(Course a, Course b) {
   return a.get_title() < b.get_title();
 }
 
+int comp_major(Course a, Course b) {
+  return a.get_major() < b.get_major();
+}
+
 int comp_number(Course a, Course b) {
   return a.get_course_num() < b.get_course_num();
 }

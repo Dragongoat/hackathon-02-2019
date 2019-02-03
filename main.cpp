@@ -48,7 +48,7 @@ vector<Course> parseCSV(string fileName){
 	while(getline(inFile,line)){
 		stringstream ss;
 		ss << line;
-		string title, course_num, section, instructor, day, time, building, room;
+		string title, major, course_num, section, instructor, day, time, building, room;
 		// Get title
 		if (ss.peek() == '"') {
 			ss.ignore();
@@ -58,6 +58,8 @@ vector<Course> parseCSV(string fileName){
 		else {
 			getline(ss, title, ',');
 		}
+		// Get major
+		getline(ss, major, ',');
 		// Get Course number
 		getline(ss, course_num, ',');
 		// Get Section
@@ -79,7 +81,7 @@ vector<Course> parseCSV(string fileName){
 		getline(ss, room, ',');
 
 		//store info into course class vector
-		Course currentCourse = Course(title,course_num,section,instructor,day,timeArr[0],timeArr[1],building,room);
+		Course currentCourse = Course(title, major, course_num,section,instructor,day,timeArr[0],timeArr[1],building,room);
 		courseList.push_back(currentCourse);
 
 	}

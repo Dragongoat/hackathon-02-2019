@@ -23,6 +23,7 @@ public:
 vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_filters, string filter_type, string specific);
 vector<Course> remove_filter(vector<Course> all_courses, vector<Filter> &applied_filters, string filter_type, string specific);
 vector<Course> filter_title(vector<Course> course_pool, string target);
+vector<Course> filter_major(vector<Course> course_pool, string target);
 vector<Course> filter_number(vector<Course> course_pool, string target);
 vector<Course> filter_instructor(vector<Course> course_pool, string target);
 vector<Course> filter_day(vector<Course> course_pool, string target);
