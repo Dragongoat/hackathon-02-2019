@@ -1,6 +1,6 @@
 #include "filter.h"
 
-vector<Course> add_filter(vector<Course> course_pool, vector<Filter> applied_filters, string filter_type, string specific) {
+vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_filters, string filter_type, string specific) {
   // Check if filter is already applied
 
   vector<Course> updated_course_pool;
@@ -35,7 +35,7 @@ vector<Course> filter_title(vector<Course> course_pool, string target) {
   int index = binSearchTitle(course_pool, target, 0, course_pool.size() - 1);
 
   // Finds first occurrence of the target
-  while (index > 0 && course_pool[index].get_title() == target) {
+  while (index > 0 && course_pool[index - 1].get_title() == target) {
     index--;
   }
 
