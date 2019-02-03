@@ -44,6 +44,7 @@ private:
 };
 
 int comp_title(Course a, Course b);
+int comp_major(Course a, Course b);
 int comp_number(Course a, Course b);
 int comp_instructor(Course a, Course b);
 int comp_building(Course a, Course b);

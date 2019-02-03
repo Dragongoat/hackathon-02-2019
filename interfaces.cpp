@@ -232,6 +232,7 @@ void specifyFilter(string &filter_type, string &target) {
   options.push_back("Day");
   options.push_back("Time");
   options.push_back("Building");
+  options.push_back("Room");
 
   cout << FORMAT_LINE;
   cout << "What type of filter would you like to add?\n";
@@ -243,6 +244,26 @@ void specifyFilter(string &filter_type, string &target) {
     case 1:
       filter_type = "title";
       cout << "Enter course title to filter: ";
+      getline(cin, target);
+      break;
+    case 2:
+      filter_type = "major";
+      cout << "Enter major to filter: ";
+      getline(cin, target);
+      break;
+    case 3:
+      filter_type = "number";
+      cout << "Enter course number to filter: ";
+      getline(cin, target);
+      break;
+    case 4:
+      filter_type = "instructor";
+      cout << "Enter instructor to filter: ";
+      getline(cin, target);
+      break;
+    case 7:
+      filter_type = "building";
+      cout << "Enter building to filter: ";
       getline(cin, target);
       break;
     default:
