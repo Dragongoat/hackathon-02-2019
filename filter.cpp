@@ -50,6 +50,24 @@ vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_fi
   return updated_course_pool;
 }
 
+vector<Course> remove_filter(vector<Course> all_courses, vector<Filter> &applied_filters, string filter_type) {
+
+    for (int i = 0; i < (int)applied_filters.size(); i++) {
+      if (applied_filters[i].type == filter_type) {
+        applied_filters[i] = applied_filters[applied_filters.size() - 1];
+        applied_filters.resize(applied_filters.size() - 1);
+      }
+    }
+    vector<Filter> app_filters;
+    vector<Course> filtered = all_courses;
+
+    for (int i = 0; i < (int)applied_filters.size(); i++) {
+      filtered = add_filter(filtered, app_filters, applied_filters[i].type, applied_filters[i].item_to_filter);
+    }
+
+    return filtered;
+}
+
 vector<Course> filter_title(vector<Course> course_pool, string target) {
   vector<Course> filtered;
 

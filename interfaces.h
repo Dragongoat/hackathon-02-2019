@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <time.h>
 
 using std::cout;
 using std::cin;
@@ -21,5 +22,6 @@ int Selection(vector<string> options);
 void selection_display(vector<string> options);
 int get_selection(int num_options);
 void specifyFilter(string &filter_type, string &target);
+void getTime(char &day, string &t);
 
 #endif

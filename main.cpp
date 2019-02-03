@@ -22,27 +22,13 @@ using std::to_string;
 vector<Course> parseCSV(string fileName);
 vector<string> parseTime(string time);
 string convertTime(string time);
-void getTime(char &day, string &t);
 
 int main(){
-
-/*	time_t tt = time(NULL);
-	stringstream ss;
-	ss << ctime(&tt);
-	string time = ss.str();
-	cout << time << endl;
-	string day;
-	getline(ss,day,' ');
-	cout << day << endl;
-	//cout << timeStr << endl;
-*/
 
 	vector<Course> courseList;
 	string csvFile = "data.csv";
 	courseList = parseCSV(csvFile);
 	menu_home(courseList);
-
-
 
 	return 0;
 }
@@ -138,31 +124,4 @@ string convertTime(string time){
 		}
 	}
 	return time;
-}
-
-void getTime(char &day, string &t){
-	string curDay,garbage, curTime;
-	stringstream ss;
-	time_t tt = time(NULL);
-	ss << ctime(&tt);
-	//Get current day
-	getline(ss,curDay,' ');
-	//Getting rid of garbage values
-	getline(ss,garbage,' ');
-	getline(ss,garbage,' ');
-	getline(ss,garbage,' ');
-	// enf of garbage valies
-	// Get time
-	getline(ss,curTime,' ');
-	curTime.erase(2,1);
-	curTime.erase(4,3);
-	if(curDay[0] != 'T'){
-		day = curDay[0];
-	}
-	else{
-		if(curDay[1] == 'u') day = 'T';
-		else day = 'R';
-	}
-
-	t = curTime;
 }

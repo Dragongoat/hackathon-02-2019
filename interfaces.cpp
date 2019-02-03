@@ -2,7 +2,9 @@
 #include "filter.h"
 #include <cctype>
 #include <cstdlib>
+#include <sstream>
 
+using std::stringstream;
 using std::atoi;
 using std::isdigit;
 
@@ -86,7 +88,6 @@ int menu_search(vector<Course> all_courses) {
   vector<string> options;
   options.push_back("Add new filter");
   options.push_back("Remove filter");
-  options.push_back("Search course");
   options.push_back("Show all filtered courses");
   options.push_back("Quit");
 
@@ -127,18 +128,19 @@ int menu_search(vector<Course> all_courses) {
           break;
         }
       case 2:
-        cout << "Remove filter called\n";
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          filtered_courses = remove_filter(all_courses, applied_filters, filter_type);
+          break;
+        }
       case 3:
-        cout << "Search courses called\n";
-        break;
-      case 4:
         for (int i = 0; i < (int)filtered_courses.size(); i++) {
           filtered_courses[i].print();
         }
         cout << endl;
         break;
-      case 5:
+      case 4:
         quit = true;
         break;
     }
@@ -149,6 +151,24 @@ int menu_search(vector<Course> all_courses) {
 }
 
 int menu_current_classes(vector<Course> all_courses) {
+  char day;
+  string time;
+  getTime(day, time);
+
+  // Change this to all courses happening now
+  vector<Course> filtered_courses;
+  for (int i = 0; i < (int)all_courses.size(); i++) {
+    string days = all_courses[i].get_day();
+    string s_time = all_courses[i].get_start_time();
+    string e_time = all_courses[i].get_end_time();
+    for (int j = 0; j < (int)days.size(); j++) {
+      if (day == days[j]) {
+        if (s_time <= time && e_time >= time) {
+          filtered_courses.push_back(all_courses[i]);
+        }
+      }
+    }
+  }
   vector<Filter> applied_filters;
 
   vector<string> options;
@@ -168,18 +188,43 @@ int menu_current_classes(vector<Course> all_courses) {
     for (int i = 0; i < (int)applied_filters.size(); i++) {
       cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
+    if (applied_filters.size() > 0) {
+      cout << endl;
+    }
     cout << endl;
     int selection = Selection(options);
 
     switch(selection) {
       case 1:
-        cout << "Add new filter called\n";
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          // Check if filter is already applied
+          bool dupe_type = false;
+          for (int i = 0; i < (int)applied_filters.size(); i++) {
+            if (applied_filters[i].type == filter_type) {
+              cout << "ERROR: Only one filter of each type may be added\n";
+              dupe_type = true;;
+            }
+          }
+          if (!dupe_type) {
+            filtered_courses = add_filter(filtered_courses, applied_filters, filter_type, filter_target);
+          }
+          cout << endl;
+          break;
+        }
       case 2:
-        cout << "Remove filter called\n";
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          filtered_courses = remove_filter(all_courses, applied_filters, filter_type);
+          break;
+        }
       case 3:
-        cout << "Show current classes called\n";
+        for (int i = 0; i < (int)filtered_courses.size(); i++) {
+          filtered_courses[i].print();
+        }
+        cout << endl;
         break;
       case 4:
         quit = true;
@@ -191,6 +236,21 @@ int menu_current_classes(vector<Course> all_courses) {
 }
 
 int menu_todays_classes(vector<Course> all_courses) {
+  char day;
+  string time;
+  getTime(day, time);
+
+  // Change this to all courses happening today
+  vector<Course> filtered_courses;
+  for (int i = 0; i < (int)all_courses.size(); i++) {
+    string days = all_courses[i].get_day();
+    for (int j = 0; j < (int)days.size(); j++) {
+      if (day == days[j]) {
+        filtered_courses.push_back(all_courses[i]);
+      }
+    }
+  }
+
   vector<Filter> applied_filters;
 
   vector<string> options;
@@ -210,18 +270,43 @@ int menu_todays_classes(vector<Course> all_courses) {
     for (int i = 0; i < (int)applied_filters.size(); i++) {
       cout << "<" << applied_filters[i].item_to_filter << "> ";
     }
+    if (applied_filters.size() > 0) {
+      cout << endl;
+    }
     cout << endl;
     int selection = Selection(options);
 
     switch(selection) {
       case 1:
-        cout << "Add new filter called\n";
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          // Check if filter is already applied
+          bool dupe_type = false;
+          for (int i = 0; i < (int)applied_filters.size(); i++) {
+            if (applied_filters[i].type == filter_type) {
+              cout << "ERROR: Only one filter of each type may be added\n";
+              dupe_type = true;;
+            }
+          }
+          if (!dupe_type) {
+            filtered_courses = add_filter(filtered_courses, applied_filters, filter_type, filter_target);
+          }
+          cout << endl;
+          break;
+        }
       case 2:
-        cout << "Remove filter called\n";
-        break;
+        {
+          string filter_type, filter_target;
+          specifyFilter(filter_type, filter_target);
+          filtered_courses = remove_filter(all_courses, applied_filters, filter_type);
+          break;
+        }
       case 3:
-        cout << "Show today's classes called\n";
+        for (int i = 0; i < (int)filtered_courses.size(); i++) {
+          filtered_courses[i].print();
+        }
+        cout << endl;
         break;
       case 4:
         quit = true;
@@ -244,7 +329,7 @@ void specifyFilter(string &filter_type, string &target) {
   options.push_back("Building");
 
   cout << FORMAT_LINE;
-  cout << "What type of filter would you like to add?\n";
+  cout << "What type of filter?\n";
   cout << FORMAT_LINE;
   cout << endl;
   int selection = Selection(options);
@@ -294,4 +379,31 @@ void specifyFilter(string &filter_type, string &target) {
       cout << "Currently unavailable\n";
       break;
   }
+}
+
+void getTime(char &day, string &t){
+	string curDay,garbage, curTime;
+	stringstream ss;
+	time_t tt = time(NULL);
+	ss << ctime(&tt);
+	//Get current day
+	getline(ss,curDay,' ');
+	//Getting rid of garbage values
+	getline(ss,garbage,' ');
+	getline(ss,garbage,' ');
+	getline(ss,garbage,' ');
+	// enf of garbage valies
+	// Get time
+	getline(ss,curTime,' ');
+	curTime.erase(2,1);
+	curTime.erase(4,3);
+	if(curDay[0] != 'T'){
+		day = curDay[0];
+	}
+	else{
+		if(curDay[1] == 'u') day = 'T';
+		else day = 'R';
+	}
+
+	t = curTime;
 }
