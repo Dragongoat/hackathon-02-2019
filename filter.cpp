@@ -13,18 +13,34 @@ vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_fi
 
   if (filter_type == "title") {
     updated_course_pool = filter_title(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "major") {
     updated_course_pool = filter_major(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "number") {
     updated_course_pool = filter_number(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "instructor") {
     updated_course_pool = filter_instructor(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "day") {
@@ -32,18 +48,34 @@ vector<Course> add_filter(vector<Course> course_pool, vector<Filter> &applied_fi
       specific[i] = toupper(specific[i]);
     }
     updated_course_pool = filter_day(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "start_time") {
     updated_course_pool = filter_s_time(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "end_time") {
     updated_course_pool = filter_e_time(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
   else if (filter_type == "building") {
     updated_course_pool = filter_building(course_pool, specific);
+    if (updated_course_pool.size() == course_pool.size()) {
+      cout << "ERROR: Entry not found, filter ignored\n";
+      return course_pool;
+    }
     applied_filters.push_back(adding_filter);
   }
 
@@ -74,6 +106,9 @@ vector<Course> filter_title(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_title);
 
   int index = binSearchTitle(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
 
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_title() == target) {
@@ -93,6 +128,9 @@ vector<Course> filter_major(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_major);
 
   int index = binSearchMajor(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_major() == target) {
     index--;
@@ -109,6 +147,9 @@ vector<Course> filter_number(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_number);
 
   int index = binSearchNumber(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_course_num() == target) {
     index--;
@@ -125,6 +166,9 @@ vector<Course> filter_instructor(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_instructor);
 
   int index = binSearchInstructor(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_instructor() == target) {
     index--;
@@ -141,6 +185,9 @@ vector<Course> filter_day(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_day);
 
   int index = binSearchDay(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_day() == target) {
     index--;
@@ -157,6 +204,9 @@ vector<Course> filter_s_time(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_s_time);
 
   int index = binSearchSTime(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_start_time() == target) {
     index--;
@@ -173,6 +223,9 @@ vector<Course> filter_e_time(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_e_time);
 
   int index = binSearchETime(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_end_time() == target) {
     index--;
@@ -189,6 +242,9 @@ vector<Course> filter_building(vector<Course> course_pool, string target) {
   sort(course_pool.begin(), course_pool.end(), comp_building);
 
   int index = binSearchBuilding(course_pool, target, 0, course_pool.size() - 1);
+  if (index == -1) {
+    return course_pool;
+  }
   // Finds first occurrence of the target
   while (index > 0 && course_pool[index - 1].get_building() == target) {
     index--;
