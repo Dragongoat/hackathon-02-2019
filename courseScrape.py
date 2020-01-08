@@ -2,7 +2,7 @@
 # https://medium.freecodecamp.org/how-to-scrape-websites-with-python-and-beautifulsoup-5946935d93fe
 
 # import libraries
-import urllib2
+import requests
 from bs4 import BeautifulSoup
 import csv
 
@@ -11,13 +11,13 @@ majorNames = []
 majorURLs = []
 
 # specify the url
-majors_page = 'http://ems.csuchico.edu/APSS/schedule/spr2019/'
+majors_page = 'http://ems.csuchico.edu/APSS/schedule/spr2020/'
 
 # query the website and return the html to the variable 'major_list_page'
-major_list_page = urllib2.urlopen(majors_page)
+major_list_page = requests.get(majors_page)
 
 # parse the html using beautiful soup and store in variable 'soup'
-soup = BeautifulSoup(major_list_page, 'html.parser')
+soup = BeautifulSoup(major_list_page.text, 'html.parser')
 
 # Take out the <div> of name and get its value
 majorNames = soup.findAll('dd', attrs={'class': 'indexletterdd'})
@@ -48,10 +48,11 @@ for current_major in majorURLs:
     classBldg = []
 
     #
-    open_page = urllib2.urlopen(current_url)
+    print "Opening page for major: {}".format(current_major)
+    open_page = requests.get(current_url)
 
     #
-    parse_page = BeautifulSoup(open_page,'html.parser')
+    parse_page = BeautifulSoup(open_page.text,'html.parser')
 
     #Find all necessarry attributes
     courseNames = parse_page.findAll('td',attrs={'class' : 'title'})
